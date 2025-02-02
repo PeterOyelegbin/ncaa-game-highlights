@@ -3,13 +3,13 @@
 ![GameHighlightProcessor](https://github.com/user-attachments/assets/762c3582-c6fe-48b2-b7da-0ff5b86b7970)
 
 ## File Overview
-- config.py script: Imports necessary environment variables and assigns them to Python variables, providing default values where appropriate.
-- fetch.py script: This will fetch the highlights from the API according to the date and league then store them in an S3 bucket as a JSON file (basketball_highlight.json)
-- process_one_video.py: Connects to the S3 bucket and retrieves the JSON file to extract and download the first video URL from within the JSON file then saves the video in the S3 bucket under a different folder (videos/) 
-- mediaconvert_process.py: Uses MediaConvert to process a video file - configures the video codec, resolution, and bitrate and also the audio settings then stores the processed video back into an S3 bucket
-- run_all.py: Runs the scripts in chronological order and provides buffer time for the tasks to be created.
-- Dockerfile: Provides the step-by-step approach to building the image.
-- Terraform Scripts: Create resources in AWS like S3, IAM user roles, elastic registry service, and elastic container services in a scalable and repeatable way.
+- **config.py script:** Imports necessary environment variables and assigns them to Python variables, providing default values where appropriate.
+- **fetch.py script:** This will fetch the highlights from the API according to the date and league then store them in an S3 bucket as a JSON file (basketball_highlight.json)
+- **process_one_video.py:** Connects to the S3 bucket and retrieves the JSON file to extract and download the first video URL from within the JSON file then saves the video in the S3 bucket under a different folder (videos/) 
+- **mediaconvert_process.py:** Uses MediaConvert to process a video file - configures the video codec, resolution, and bitrate and also the audio settings then stores the processed video back into an S3 bucket
+- **run_all.py:** Runs the scripts in chronological order and provides buffer time for the tasks to be created.
+- **Dockerfile:** Provides the step-by-step approach to building the image.
+- **Terraform Scripts:** Create resources in AWS like S3, IAM user roles, elastic registry service, and elastic container services in a scalable and repeatable way.
 
 ## Prerequisites
 Before running the scripts, ensure you have the following:
@@ -32,7 +32,7 @@ Under Users
 ## Part 1: Step-by-Step Procedure (Local)
 1. **Clone The Repo**
   ```bash
-  git clone https://github.com/alahl1/NCAAGameHighlights.git
+  git clone https://github.com/PeterOyelegbin/ncaa-game-highlights.git
   cd /src
   ```
 
