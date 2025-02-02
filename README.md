@@ -143,7 +143,7 @@ docker run --env-file .env highlight-processor
 3. Change the date from static (specific point in time) to dynamic (now, last 30 days from today's date, etc)
 
 ### Conclusion
-This project demonstrates my hands-on approach to delivering an event-driven architecture using AWS services and APIs. By following this guide, you can set up and customize the system to meet your requirements.
+This project showcases my practical experience with Docker, AWS S3, AWS Media Converter, and APIs. By following this guide, you can set up and customize the system to fit your needs.
 
 ---
 
