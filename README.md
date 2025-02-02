@@ -1,29 +1,23 @@
-# NCAAGameHighlights
-**Project Overview:** This project uses RapidAPI to obtain NCAA game highlights using a Docker container and uses AWS Media Convert to convert the media file.
+# NCAA Game Highlights
+**Project Overview:** This project uses RapidAPI to obtain NCAA game highlights using a Docker container and AWS Media Convert to convert the media file.
+![GameHighlightProcessor](https://github.com/user-attachments/assets/762c3582-c6fe-48b2-b7da-0ff5b86b7970)
 
 ## File Overview
 - config.py script: Imports necessary environment variables and assigns them to Python variables, providing default values where appropriate.
-
 - fetch.py script: This will fetch the highlights from the API according to the date and league then store them in an S3 bucket as a JSON file (basketball_highlight.json)
-
-- process_one_video.py: Connects to the S3 bucket and retrieves the JSON file to extracts and download the first video URL from within the JSON file then save the video in the S3 bucket under a different folder (videos/) 
-
-- mediaconvert_process.py: Uses MediaConvert to process a video file - configures the video codec, resolution and bitrate and also the audio settings then stores the processed video back into an S3 bucket
-
-- run_all.py: Runs the scripts in a chronological order and provides buffer time for the tasks to be created.
-
-- Dockerfile: Provides the step by step approach to build the image.
-
-- Terraform Scripts: Create resources in AWS like S3, IAM user roles, elastic registry service and elastic container services in a scalable and repeatable way.
+- process_one_video.py: Connects to the S3 bucket and retrieves the JSON file to extract and download the first video URL from within the JSON file then saves the video in the S3 bucket under a different folder (videos/) 
+- mediaconvert_process.py: Uses MediaConvert to process a video file - configures the video codec, resolution, and bitrate and also the audio settings then stores the processed video back into an S3 bucket
+- run_all.py: Runs the scripts in chronological order and provides buffer time for the tasks to be created.
+- Dockerfile: Provides the step-by-step approach to building the image.
+- Terraform Scripts: Create resources in AWS like S3, IAM user roles, elastic registry service, and elastic container services in a scalable and repeatable way.
 
 ## Prerequisites
 Before running the scripts, ensure you have the following:
 1. **Create Rapidapi Account**
   - Rapidapi.com account, will be needed to access highlight images and videos.
-
   - [Sports Highlights API](https://rapidapi.com/highlightly-api-highlightly-api-default/api/sport-highlights-api/playground/apiendpoint_16dd5813-39c6-43f0-aebe-11f891fe5149) is the endpoint we will be using 
 
-2. **Verify prerequites are installed**
+2. **Verify prerequisites are installed**
   - Docker should be pre-installed in most regions docker --version
   - AWS CLI pre-installed aws --version
   - Python3 should be pre-installed also python3 --version
@@ -34,10 +28,6 @@ Before running the scripts, ensure you have the following:
 4. **Retrieve Access Keys and Secret Access Keys**
   - Create an access key if you do not have an existing access key in the IAM dashboard
 Under Users
-
-
-## Technical Diagram
-![GameHighlightProcessor](https://github.com/user-attachments/assets/762c3582-c6fe-48b2-b7da-0ff5b86b7970)
 
 ## Part 1: Step-by-Step Procedure (Local)
 1. **Clone The Repo**
@@ -89,7 +79,7 @@ Under Users
   ```bash
   API_URL=https://sport-highlights-api.p.rapidapi.com/basketball/highlights
   RAPIDAPI_HOST=sport-highlights-api.p.rapidapi.com
-  RAPIDAPI_KEY=b052cd566amsh3c6622cc454fb5cp191203jsn0eac09642276
+  RAPIDAPI_KEY=your_rapidapi_key_here
   AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
   AWS_DEFAULT_REGION=us-east-1
@@ -122,25 +112,25 @@ Run:
 ```bash
 docker build -t highlight-processor .
 ```
-[docker_build](images/docker_build.png)
+![docker_build](images/docker_build.png)
 
 8. **Run the Docker Container Locally**
 ```bash
 docker run --env-file .env highlight-processor
 ```
-[run_docker_image](images/run_docker_image.png)
+![run_docker_image](images/run_docker_image.png)
 
 9. **Confirm objects are saved in your S3 bucket**
-[s3_objects](images/s3_objects.png)
+![s3_objects](images/s3_objects.png)
 
 10. **Confirm there is a video uploaded to s3://<your-bucket-name>/videos/**
-[extracted_video](images/extracted_video.png)
+![extracted_video](images/extracted_video.png)
 
 11. **Confirm there is a video uploaded to s3://<your-bucket-name>/processed_videos/**
-[processed_video](images/processed_video.png)
+![processed_video](images/processed_video.png)
 
 12. **Play the processed video**
-[processed_sample_video](images/processed_sample_video.png)
+![processed_sample_video](images/processed_sample_video.png)
 
 ### What I Learned
 1. Working with Docker and AWS Services
@@ -149,8 +139,8 @@ docker run --env-file .env highlight-processor
 
 ### Future Enhancements
 1. Using Terraform to enhance the Infrastructure as Code (IaC)
-2. Increasing the amount of videos process and converted with AWS Media Convert
-3. Change the date from static (specific point in time) to dyanmic (now, last 30 days from today's date,etc)
+2. Increasing the amount of videos processed and converted with AWS Media Convert
+3. Change the date from static (specific point in time) to dynamic (now, last 30 days from today's date, etc)
 
 ### Conclusion
 This project demonstrates my hands-on approach to delivering an event-driven architecture using AWS services and APIs. By following this guide, you can set up and customize the system to meet your requirements.
@@ -160,7 +150,7 @@ This project demonstrates my hands-on approach to delivering an event-driven arc
 ## Part 2: Step-by-Step Procedure (Terraform)
 
 ### **Setup terraform.tfvars File**
-1. In the github repo, there is a resources folder and copy the entire contents
+1. In the GitHub repo, there is a resources folder and copy the entire contents
 2. In the AWS Cloudshell or vs code terminal, create the file vpc_setup.sh and paste the script inside.
 3. Run the script
 ```bash
@@ -181,7 +171,7 @@ aws mediaconvert describe-endpoints --query "Endpoints[0].Url" --output text
 7. Leave the mediaconvert_role_arn string empty
 
 Helpful Tip for Beginners:
-1. Use the same region, project, S3 Bucketname and ECR Repo name to make following along easier. Certain steps like pushing the docker image to the ECR repo is easier to copy and paste without remember what you named your repo :)
+1. Use the same region, project, S3 Bucketname, and ECR Repo name to make following along easier. Certain steps like pushing the docker image to the ECR repo are easier to copy and paste without remembering what you named your repo :)
 
 ### **Run The Project**
 1.  Navigate to the terraform folder/workspace in VS Code
@@ -189,15 +179,15 @@ From the src folder
 ```bash
 cd terraform
 ```
-2. Initialize terraform working directory
+2. Initialize Terraform working directory
 ```bash
 terraform init
 ```
-3. Check syntax and validity of your Terraform configuration files
+3. Check the syntax and validity of your Terraform configuration files
 ```bash
 terraform validate
 ```
-4. Display execution plan for the terraform configuration
+4. Display the execution plan for the terraform configuration
 ```bash
 terraform plan
 ```
@@ -233,11 +223,11 @@ docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:l
 bash ncaaprojectcleanup.sh
 ```
 ### **Review Video Files**
-1. Navigate to the S3 Bucket and confirm there is a json video in the highlights folder and a video in the videos folder
+1. Navigate to the S3 Bucket and confirm there is a JSON video in the highlights folder and a video in the videos folder
 
 ### **What We Learned**
 1. Deploying local docker images to ECR 
-2. A high level overview of terraform files
+2. A high-level overview of terraform files
 3. Networking - VPCs, Internet Gateways, private subnets and public subnets
 4. SSM for saving secrets and pulling into terraform
 
