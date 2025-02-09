@@ -198,7 +198,7 @@ terraform apply -var-file="terraform.dev.tfvars"
 
 6. Create an ECR Repo
 ```bash
-aws ecr create-repository --repository-name highlight-pipeline
+aws ecr create-repository --repository-name highlight-pipeline2-final
 ```
 
 7. Log into ECR
@@ -208,12 +208,12 @@ aws ecr get-login-password --region us-east-1 | \
 ```
 8. Build and Push the Docker Image
 ```bash
-docker build -t highlight-pipeline:latest .
-docker tag highlight-pipeline:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
+docker build -t highlight-pipeline2-final:latest .
+docker tag highlight-pipeline2-final:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline2-final:latest
 ```
 
 ```bash
-docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
+docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline2-final:latest
 ```
 
 ### **Destroy ECS and ECR resources**
