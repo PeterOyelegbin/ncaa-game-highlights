@@ -154,9 +154,11 @@ This project showcases my practical experience with Docker, AWS S3, AWS Media Co
 2. In the AWS Cloudshell or vs code terminal, create the file vpc_setup.sh and paste the script inside.
 3. Run the script
 ```bash
-bash vpc_setup.sh
+bash resources/vpc_setup.sh
 ```
-4. You will see variables in the output, paste these variables into lines 8-13.
+![vpc_setup](images/terraform/resources_setup.png)
+
+4. You will see variables in the output as shown above, paste these variables into lines 8-13.
 5. Store your API key in AWS Secrets Manager
 ```bash
 aws ssm put-parameter \
@@ -164,6 +166,8 @@ aws ssm put-parameter \
   --value "YOUR_SECRET_KEY" \
   --type SecureString
 ```
+![ssm_setup](images/terraform/ssm_setup.png)
+
 6.  Run the following script to obtain your mediaconvert_endpoint:
 ```bash
 aws mediaconvert describe-endpoints --query "Endpoints[0].Url" --output text
@@ -195,35 +199,40 @@ terraform plan
 ```bash
 terraform apply -var-file="terraform.dev.tfvars"
 ```
+![terraform_apply](images/terraform/terraform_apply.png)
 
 6. Create an ECR Repo
 ```bash
 aws ecr create-repository --repository-name highlight-pipeline2-final
 ```
-
 7. Log into ECR
 ```bash
 aws ecr get-login-password --region us-east-1 | \
   docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
 ```
-8. Build and Push the Docker Image
+8. Build and tag the Docker Image
 ```bash
 docker build -t highlight-pipeline2-final:latest .
 docker tag highlight-pipeline2-final:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline2-final:latest
 ```
-
+9. Push the Docker Image
 ```bash
 docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline2-final:latest
 ```
+![task_log](images/terraform/task_log.png)
+
+### **Review Video Files**
+1. Navigate to the S3 Bucket and confirm there is a JSON video in the highlights folder
+   ![s3_object](images/terraform/s3_object.png)
+2. Navigate to the S3 Bucket and confirm there is a video in the videos folder
+   ![sample_video](images/terraform/sample_video.png)
 
 ### **Destroy ECS and ECR resources**
-1. In the AWS Cloudshell or vs code terminal, create the file ncaaprojectcleanup.sh and paste the script inside from the resources folder.
-3. Run the script
+1. In the AWS Cloudshell or vs code terminal, create the file ncaaprojectcleanup.sh and paste the script inside the resources folder.
+2. Run the script
 ```bash
 bash ncaaprojectcleanup.sh
 ```
-### **Review Video Files**
-1. Navigate to the S3 Bucket and confirm there is a JSON video in the highlights folder and a video in the videos folder
 
 ### **What We Learned**
 1. Deploying local docker images to ECR 
