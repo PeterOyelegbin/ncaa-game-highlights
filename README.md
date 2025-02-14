@@ -149,7 +149,7 @@ This project showcases my practical experience with Docker, AWS S3, AWS Media Co
 
 ## Part 2: Step-by-Step Procedure (Terraform)
 
-### **Setup terraform.tfvars File**
+### Setup terraform.tfvars File
 1. In the GitHub repo, there is a resources folder and copy the entire contents
 2. In the AWS Cloudshell or vs code terminal, create the file vpc_setup.sh and paste the script inside.
 3. Run the script
@@ -173,11 +173,9 @@ aws ssm put-parameter \
 aws mediaconvert describe-endpoints --query "Endpoints[0].Url" --output text
 ```
 7. Leave the mediaconvert_role_arn string empty
+   - **Helpful Tip for Beginners:** Use the same region, project, S3 Bucketname, and ECR Repo name to make following along easier. Certain steps like pushing the docker image to the ECR repo are easier to copy and paste without remembering what you named your repo :)
 
-Helpful Tip for Beginners:
-1. Use the same region, project, S3 Bucketname, and ECR Repo name to make following along easier. Certain steps like pushing the docker image to the ECR repo are easier to copy and paste without remembering what you named your repo :)
-
-### **Run The Project**
+### Run The Project
 1.  Navigate to the terraform folder/workspace in VS Code
 From the src folder
 ```bash
@@ -221,24 +219,28 @@ docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline2-
 ```
 ![task_log](images/terraform/task_log.png)
 
-### **Review Video Files**
+### Review Video Files
 1. Navigate to the S3 Bucket and confirm there is a JSON video in the highlights folder
    ![s3_object](images/terraform/s3_object.png)
 2. Navigate to the S3 Bucket and confirm there is a video in the videos folder
    ![sample_video](images/terraform/sample_video.png)
 
-### **Destroy ECS and ECR resources**
-1. In the AWS Cloudshell or vs code terminal, create the file ncaaprojectcleanup.sh and paste the script inside the resources folder.
-2. Run the script
+### Destroy all resources
+1. Destroy resources created by terraform
+```bash
+terraform destroy
+```
+2. In the AWS Cloudshell or vs code terminal, create the file ncaaprojectcleanup.sh and paste the script inside the resources folder.
+3. Run the script
 ```bash
 bash ncaaprojectcleanup.sh
 ```
 
-### **What We Learned**
+### What I Learned
 1. Deploying local docker images to ECR 
 2. A high-level overview of terraform files
 3. Networking - VPCs, Internet Gateways, private subnets and public subnets
 4. SSM for saving secrets and pulling into terraform
 
-### **Future Enhancements**
+### Future Enhancements
 1. Automating the creation of VPCs/networking infra, media endpoint
